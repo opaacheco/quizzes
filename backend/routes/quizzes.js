@@ -27,22 +27,19 @@ function ensureAuth(req, res, next) {
   return res.sendStatus(401);
 }
 
-router.get(
-  "/",
-  /*ensureAuth,*/ async function (req, res, next) {
-    db.collection("produtos")
-      .find()
-      .toArray()
-      .then((produtos) => {
-        if (!produtos) {
-          res.status(401).send("Produtos não encontrados");
-        }
-        res.send(produtos);
-      })
-      .catch((err) => {
-        res.status(500).send(err);
-      });
-  }
-);
+router.get("/", ensureAuth, async function (req, res, next) {
+  db.collection("quizzes")
+    .find()
+    .toArray()
+    .then((produtos) => {
+      if (!produtos) {
+        res.status(401).send("Produtos não encontrados");
+      }
+      res.send(produtos);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+});
 
 module.exports = router;

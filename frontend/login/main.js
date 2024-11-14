@@ -7,6 +7,7 @@ async function start() {
 async function handleFormRequest(evt) {
   evt.preventDefault();
 
-  const form = new FormData(evt.target);
-  await Auth.login(form);
+  const form = new FormData(this);
+  console.log(form);
+  await Auth.auth("login", form);
 }

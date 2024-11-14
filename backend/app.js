@@ -6,7 +6,7 @@ var session = require("express-session");
 
 var usersRouter = require("./routes/users");
 var loginRouter = require("./routes/login");
-var produtosRouter = require("./routes/produtos");
+var quizzesRouter = require("./routes/quizzes");
 
 var app = express();
 
@@ -14,7 +14,7 @@ app.use(
   session({
     secret: "FdzvG2o9cXl42OYocqurNNonhObVfaIf",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false },
   })
 );
@@ -35,6 +35,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/login", loginRouter);
 app.use("/users", usersRouter);
-app.use("/produtos", produtosRouter);
+app.use("/quizzes", quizzesRouter);
 
 module.exports = app;

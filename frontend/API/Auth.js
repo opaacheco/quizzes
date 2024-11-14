@@ -1,6 +1,6 @@
 class Auth extends API {
-  static async login(params) {
-    const response = await super.post("login", params);
+  static async auth(endpoint, params) {
+    const response = await super.post(endpoint, params);
     return await response.json();
   }
 }
