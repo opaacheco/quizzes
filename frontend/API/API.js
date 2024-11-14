@@ -6,7 +6,6 @@ class API {
       baseURL + endpoint + new URLSearchParams(params),
       { credentials: "include" }
     );
-
     return this.treatResponse(response);
   }
 
@@ -20,7 +19,7 @@ class API {
       credentials: "include",
     });
     if (response.ok) {
-      window.location.href = "/frontend/login/produtos.html";
+      window.location.href = "/frontend/perfil/perfil.html";
     }
     return this.treatResponse(response);
   }

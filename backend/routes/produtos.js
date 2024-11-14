@@ -3,7 +3,7 @@ var router = express.Router();
 const { MongoClient } = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
-const dbName = "pessoasProdutos";
+const dbName = "quizzes";
 
 let db;
 

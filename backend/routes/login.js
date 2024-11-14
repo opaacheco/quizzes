@@ -4,7 +4,7 @@ var router = express.Router();
 const { MongoClient } = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
-const dbName = "pessoasProdutos";
+const dbName = "quizzes";
 
 let db;
 
@@ -30,9 +30,11 @@ router.post("/", async function (req, res, next) {
 
   const hashedPassword = hash.digest("hex");
 
+  console.log(hashedPassword);
   try {
     const user = await db.collection("users").findOne({ email: email });
-
+    console.log(user);
+    console.log(user.password);
     if (!user || hashedPassword !== user.password) {
       return res.status(401).json({ message: "Credenciais inválidas." });
     }
