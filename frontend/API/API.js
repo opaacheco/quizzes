@@ -18,9 +18,16 @@ class API {
       },
       credentials: "include",
     });
-    if (response.ok) {
-      window.location.href = "/frontend/perfil/perfil.html";
+    if (endpoint == "login") {
+      if (response.ok) {
+        window.location.href = "/frontend/home/home.html";
+      }
+    } else {
+      if (response.ok) {
+        window.location.href = "/frontend/login/login.html";
+      }
     }
+
     return this.treatResponse(response);
   }
 
@@ -51,11 +58,15 @@ class API {
 
   static treatResponse(response) {
     if (response.ok) {
-      return response;
+      return response.json();
+    }
+
+    if (response.status == 400) {
+      return window.location.replace("/frontend/login/login.html");
     }
 
     if (response.status == 401) {
-      return window.location.replace("/esgts_is/str/str_4/frontend/");
+      return window.location.replace("/frontend/login/login.html");
     }
 
     if (response.status == 422) {

@@ -1,0 +1,23 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+}
+
+form {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+form > button {
+  width: 60px;
+  margin: auto;
+  margin-top: 10px;
+}
+
+button > a {
+  text-decoration: none;
+  color: black;
+}
