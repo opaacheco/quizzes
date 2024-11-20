@@ -1,8 +1,8 @@
 start();
 async function start() {
-  const data = await API.get("users", {});
-  console.log(data);
-  renderUsers(data);
+  const data = await API.get("users/perfil", {});
+  console.log(data); /*
+  renderUsers(data);*/
 }
 
 async function renderUsers(users) {

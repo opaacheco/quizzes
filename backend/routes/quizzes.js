@@ -28,18 +28,17 @@ function ensureAuth(req, res, next) {
 }
 
 router.get("/", ensureAuth, async function (req, res, next) {
-  db.collection("quizzes")
-    .find()
-    .toArray()
-    .then((produtos) => {
-      if (!produtos) {
-        res.status(401).send("Produtos não encontrados");
-      }
-      res.send(produtos);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  let response = await fetch("https://opentdb.com/api_category.php");
+  return res.send(await response.json());
+});
+
+router.get("/:id", ensureAuth, async function (req, res, next) {
+  const { id } = req.params;
+  console.log(id);
+  let response = await fetch(
+    `https://opentdb.com/api.php?amount=10&category=${id}&difficulty=medium`
+  );
+  return res.send(await response.json());
 });
 
 module.exports = router;

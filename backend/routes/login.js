@@ -33,8 +33,6 @@ router.post("/", async function (req, res, next) {
   console.log(hashedPassword);
   try {
     const user = await db.collection("users").findOne({ email: email });
-    console.log(user);
-    console.log(user.password);
     if (!user || hashedPassword !== user.password) {
       return res.status(401).json({ message: "Credenciais inválidas." });
     }

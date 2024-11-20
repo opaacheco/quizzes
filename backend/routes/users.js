@@ -33,6 +33,10 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+router.get("/perfil", async function (req, res, next) {
+  console.log("oi");
+});
+
 router.get("/:id", async function (req, res, next) {
   const { id } = req.params;
   try {
@@ -44,6 +48,11 @@ router.get("/:id", async function (req, res, next) {
   } catch (error) {
     console.error("Erro ao conectar ao MongoDB:", error);
   }
+});
+
+router.get("/profile", async function (req, res, next) {
+  const user = req.user;
+  console.log(user.name);
 });
 
 router.post("/", async function (req, res, next) {
