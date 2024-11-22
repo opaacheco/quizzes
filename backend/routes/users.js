@@ -21,7 +21,14 @@ async function conexaoMongo() {
 
 conexaoMongo();
 
-router.get("/", async function (req, res, next) {
+function ensureAuth(req, res, next) {
+  if (req.session.user) {
+    return next();
+  }
+  return res.sendStatus(401);
+}
+
+router.get("/", ensureAuth, async function (req, res, next) {
   try {
     const users = await db.collection("users").find().toArray();
     if (!users) {
@@ -33,14 +40,12 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-router.get("/perfil", async function (req, res, next) {
-  console.log("oi");
-});
-
 router.get("/:id", async function (req, res, next) {
   const { id } = req.params;
   try {
-    const users = await db.collection("users").findOne({ _id: ObjectId(id) });
+    const users = await db
+      .collection("users")
+      .findOne({ _id: new ObjectId(id) });
     if (!users) {
       return res.status(404).send("Utilizador encontrado");
     }
@@ -99,7 +104,7 @@ router.delete("/:id", async function (req, res, next) {
   const { id } = req.params;
   await db
     .collection("users")
-    .findOneAndDelete({ _id: ObjectId(id) })
+    .findOneAndDelete({ _id: new ObjectId(id) })
     .then((user) => {
       if (!user) {
         return res.status(404).json("Utilizador não existe!!!");
@@ -113,10 +118,10 @@ router.delete("/:id", async function (req, res, next) {
 
 router.put("/:id", async function (req, res, next) {
   const id = req.params;
-  const { nome, email, password } = req.body;
+  const { name, email, password } = req.body;
   const errors = {};
 
-  if (!nome) errors.nome = "nome indefinido";
+  if (!name) errors.nome = "nome indefinido";
   if (!email) errors.mail = "email indefinido";
   if (!password) errors.password = "password inválida";
 
@@ -130,25 +135,22 @@ router.put("/:id", async function (req, res, next) {
 
   const hashedPassword = hash.digest("hex");
 
-  try {
-    const user = await db.collection("users").findOneAndUpdate(
-      { _id: ObjectId(id) },
-      {
-        $set: {
-          name: nome,
-          email: email,
-          password: hashedPassword,
-        },
+  const user = await db.collection("users").findOneAndUpdate(
+    { _id: new ObjectId(id) },
+    {
+      $set: {
+        name: name,
+        email: email,
+        password: hashedPassword,
       },
-      { returnDocument: "after" }
-    );
-    if (!user.value) {
-      return res
-        .status(404)
-        .send("Utilizador não encontrado ou não modificado.");
-    }
-    res.send(user.value);
-  } catch (error) {}
+    },
+    { returnDocument: "after" }
+  );
+  console.log(user);
+  if (!user) {
+    return res.status(404).send("Utilizador não encontrado ou não modificado.");
+  }
+  res.send(user.value);
 });
 
 module.exports = router;
